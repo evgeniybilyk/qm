@@ -36,3 +36,8 @@ services:
       dockerfile: docker/nodejs/Dockerfile
     volumes:
       - ./js:/usr/src/app
+
+  openresty:
+    build:
+      context: .
+      dockerfile: docker/openresty/Dockerfile
