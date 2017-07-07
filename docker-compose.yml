@@ -1,0 +1,38 @@
+version: '2.1'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.6-management
+    environment:
+      RABBITMQ_DEFAULT_USER: clickkycode
+      RABBITMQ_DEFAULT_PASS: sAfh2iqz
+    ports:
+      - 15671:15671
+      - 15672:15672
+      - 25672:25672
+      - 4369:4369
+      - 5671:5671
+      - 5672:5672
+
+  nats:
+    image: nats:0.9.6
+    ports:
+      - 8222:8222
+      - 4222:4222
+      - 6222:6222
+
+  natsboard:
+    image: urashidmalik/natsboard
+    environment:
+      NATS_MONITOR_URL: http://nats:8222
+    ports:
+      - 3000:3000
+
+  nodejs:
+#    image: node:8.1
+    build:
+      context: .
+      dockerfile: docker/nodejs/Dockerfile
+    volumes:
+      - ./js:/usr/src/app
