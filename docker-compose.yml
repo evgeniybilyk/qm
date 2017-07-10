@@ -3,10 +3,13 @@ version: '2.1'
 services:
 
   rabbitmq:
-    image: rabbitmq:3.6-management
-    environment:
-      RABBITMQ_DEFAULT_USER: clickkycode
-      RABBITMQ_DEFAULT_PASS: sAfh2iqz
+#    image: rabbitmq:3.6-management
+#    environment:
+#      RABBITMQ_DEFAULT_USER: clickkycode
+#      RABBITMQ_DEFAULT_PASS: sAfh2iqz
+    build:
+      context: .
+      dockerfile: docker/rabbitmq/Dockerfile
     ports:
       - 15671:15671
       - 15672:15672
@@ -41,3 +44,8 @@ services:
     build:
       context: .
       dockerfile: docker/openresty/Dockerfile
+    volumes:
+      - ./lua:/var/www/rabbit
+      - ./docker/openresty/nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+    ports:
+      - 127.0.0.1:8006:80
