@@ -1,4 +1,4 @@
-FROM openresty/openresty:xenial
+FROM openresty/openresty:1.11.2.2-jessie
 
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
@@ -12,30 +12,26 @@ RUN /usr/local/openresty/bin/opm install openresty/lua-resty-redis
 RUN /usr/local/openresty/bin/opm install agentzh/lua-resty-http
 
 RUN /usr/local/openresty/luajit/bin/luarocks install luautf8
-#RUN /usr/local/openresty/luajit/bin/luarocks install lua-cjson
+RUN /usr/local/openresty/luajit/bin/luarocks install lua-cjson
 RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-mysql
 RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-string
 RUN /usr/local/openresty/luajit/bin/luarocks install luasocket
 RUN /usr/local/openresty/luajit/bin/luarocks install luacrypto
 RUN /usr/local/openresty/luajit/bin/luarocks install luasec
+RUN /usr/local/openresty/luajit/bin/luarocks install nats
 RUN luarocks install luasocket
 RUN /usr/local/openresty/luajit/bin/luarocks install net-url
 RUN cd && git clone https://github.com/openresty/openresty-systemtap-toolkit.git
 RUN cd && git clone https://github.com/openresty/stapxx.git
 
-RUN apt-get install -y cmake libbson-dev
-RUN cd && \
-    git clone https://github.com/isage/lua-cbson.git && \
-    cd lua-cbson && \
-    mkdir build && \
-    cd build && \
-    cmake .. && \
-    make && \
-    make install
-
 RUN cd /tmp && \
     git clone https://github.com/wingify/lua-resty-rabbitmqstomp.git && \
     cd lua-resty-rabbitmqstomp && \
+    make install
+
+RUN cd /tmp && \
+    git clone https://github.com/doujiang24/lua-resty-kafka.git && \
+    cd lua-resty-kafka && \
     make install
 
 RUN sed -i '/http {/ a\ include conf.d/*;' /usr/local/openresty/nginx/conf/nginx.conf && \

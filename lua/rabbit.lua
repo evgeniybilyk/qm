@@ -17,7 +17,7 @@ end
 
 --mq:set_timeout(10000)
 
-local ok, err = mq:connect("172.19.0.2", 61613)
+local ok, err = mq:connect("172.19.0.3", 61613)
 
 if not ok then
     ngx.say(err)

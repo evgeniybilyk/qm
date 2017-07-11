@@ -25,10 +25,10 @@ client:subscribe('foo', subscribe_callback)
 --local subscribe_id2 = client:subscribe('foo2', subscribe_callback2)
 
 -- wait until 2 messages come
---while true
---do
---    client:wait(0)
---end
+while true
+do
+    client:wait(0)
+end
 
 -- unsubscribe from the subject
 --client:unsubscribe(subscribe_id)
