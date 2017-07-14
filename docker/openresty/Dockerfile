@@ -4,7 +4,7 @@ RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
     luarocks \
     libssl-dev \
-    dnsmasq \
+#    dnsmasq \
     git \
     systemtap
 
@@ -37,7 +37,7 @@ RUN cd /tmp && \
 RUN sed -i '/http {/ a\ include conf.d/*;' /usr/local/openresty/nginx/conf/nginx.conf && \
     mkdir -p /usr/local/openresty/nginx/conf/conf.d && \
     echo '#!/bin/bash' >> /opt/entry-point.sh && \
-    echo 'service dnsmasq start' >> /opt/entry-point.sh && \
+#    echo 'service dnsmasq start' >> /opt/entry-point.sh && \
     echo '/usr/local/openresty/bin/openresty -g "daemon off;"' >> /opt/entry-point.sh
 
 ENTRYPOINT ["/bin/bash", "/opt/entry-point.sh"]

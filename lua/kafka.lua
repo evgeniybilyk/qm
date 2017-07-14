@@ -5,8 +5,21 @@ local producer = require "resty.kafka.producer"
 --{ host = "192.168.99.100", port = 9092 }
 
 local broker_list = {
-    { host = "172.19.0.4", port = 2181 }
+    { host = "172.19.0.2", port = 9092 }
 }
+
+-- usually we do not use this library directly
+local cli = client:new(broker_list)
+local brokers, partitions = cli:fetch_metadata("test")
+if not brokers then
+    ngx.say("fetch_metadata failed, err:", partitions)
+    return
+end
+--ngx.say("brokers: ", cjson.encode(brokers), "; partitions: ", cjson.encode(partitions))
+
+for brokerid, host in pairs(brokers) do
+    ngx.say(brokerid, " - " , cjson.encode(host))
+end
 
 local key = "key"
 local message = "halo world"
@@ -26,16 +39,8 @@ local bp = producer:new(broker_list, { producer_type = "async" })
 
 local ok, err = bp:send("test", key, message)
 if not ok then
-    ngx.say("send err:", err)
+    ngx.say("send err:", err, 28)
     return
 end
-
--- usually we do not use this library directly
-local cli = client:new(broker_list)
-local brokers, partitions = cli:fetch_metadata("test")
-if not brokers then
-    ngx.say("fetch_metadata failed, err:", partitions)
-end
-ngx.say("brokers: ", cjson.encode(brokers), "; partitions: ", cjson.encode(partitions))
 
 ngx.say("send success, ok:", ok)
